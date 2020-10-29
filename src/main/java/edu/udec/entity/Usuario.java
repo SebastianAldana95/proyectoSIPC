@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -23,22 +27,30 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idUsuario;
 	
+	@NotNull(message = "El campo cedula es requerido")
+	@Pattern(regexp = "[0-9]+", message="El campo cedula solo puede contener numeros")
+	@Size(min = 6, max = 12, message="El campo cedula solo puede tener entre 6 y 12 caracteres")
 	@Column(name = "cedula", nullable = false, length = 12)
 	private String cedula;
 	
-	@Column(name = "nombre", nullable = false, length = 25)
+	@NotNull(message = "El campo nombre es requerido")
+	@Column(name = "nombre", nullable = false, length = 35)
 	private String nombre;
 	
-	@Column(name = "apellido", nullable = false, length = 25)
+	@NotNull(message = "El campo apellido es requerido")
+	@Column(name = "apellido", nullable = false, length = 35)
 	private String apellido;
 	
+	@NotNull(message = "El campo fechaNac es requerido")
 	@Column(name = "fecha_nac", nullable = false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy", iso = ISO.DATE)
 	private LocalDate fechaNac;
 	
+	@Email(message = "el correo debe ser valido")
 	@Column(name = "correo", nullable = false)
 	private String correo;
 	
+	@Pattern(regexp = "[0-9]+", message="El campo celular solo puede contener numeros")
 	@Column(name = "celular", nullable = false)
 	private String celular;
 	
@@ -57,6 +69,7 @@ public class Usuario {
 	@Column(columnDefinition = "TEXT", name = "contrasena", nullable = false)
 	private String contrasena;
 	
+	@NotNull(message = "Objeto rol atributo id es requerido")
 	@ManyToOne
 	@JoinColumn(name = "idRol", foreignKey = @ForeignKey(name = "FK_rol"))
 	private Rol rol;
