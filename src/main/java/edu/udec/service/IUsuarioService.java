@@ -4,4 +4,5 @@ import edu.udec.entity.Usuario;
 
 public interface IUsuarioService extends ServiceGneneric<Usuario, Integer> {
 
+	public Usuario editar(Usuario usuario);
 }

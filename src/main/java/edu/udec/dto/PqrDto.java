@@ -1,24 +1,15 @@
-package edu.udec.entity;
+package edu.udec.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.udec.entity.Usuario;
 
-@Entity
-@Table
-public class Pqr {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class PqrDto {
+	
 	private Integer idPqr;
 	
 	@NotNull(message = "El campo solicitud es requerido")
@@ -26,21 +17,13 @@ public class Pqr {
 	private String solicitud;
 	
 	@NotNull(message = "El campo motivo es requerido")
-	@Column(name = "motivo", nullable = false, length = 60)
+	@Column(name = "motivo", nullable = false, length = 120)
 	private String motivo;
 	
 	@NotNull(message = "Objeto Usuario atributo id es requerido")
 	@ManyToOne
 	@JoinColumn(name = "idUsuario", foreignKey = @ForeignKey(name = "FK_usuario"))
 	private Usuario usuario;
-
-	public Integer getIdPqr() {
-		return idPqr;
-	}
-
-	public void setIdPqr(Integer idPqr) {
-		this.idPqr = idPqr;
-	}
 
 	public String getSolicitud() {
 		return solicitud;
@@ -58,7 +41,6 @@ public class Pqr {
 		this.motivo = motivo;
 	}
 
-	@JsonIgnore
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -66,7 +48,15 @@ public class Pqr {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Integer getIdPqr() {
+		return idPqr;
+	}
+
+	public void setIdPqr(Integer idPqr) {
+		this.idPqr = idPqr;
+	}
 	
 	
-	
+
 }

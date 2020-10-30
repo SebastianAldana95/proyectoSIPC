@@ -1,24 +1,15 @@
-package edu.udec.entity;
+package edu.udec.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.udec.entity.Usuario;
 
-@Entity
-@Table
-public class Notificacion {
+public class NotificacionDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idNotificacion;
 	
 	@NotNull(message = "El campo titulo es requerido")
@@ -29,17 +20,10 @@ public class Notificacion {
 	@Column(name = "descripcion", nullable = false, length = 60)
 	private String descripcion;
 	
+	@NotNull(message = "El objeto usuario es requerido")
 	@ManyToOne
 	@JoinColumn(name = "idUsuario", foreignKey = @ForeignKey(name = "FK_usuario"))
 	private Usuario usuario;
-
-	public Integer getIdNotificacion() {
-		return idNotificacion;
-	}
-
-	public void setIdNotificacion(Integer idNotificacion) {
-		this.idNotificacion = idNotificacion;
-	}
 
 	public String getTitulo() {
 		return titulo;
@@ -57,7 +41,6 @@ public class Notificacion {
 		this.descripcion = descripcion;
 	}
 
-	@JsonIgnore
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -65,6 +48,13 @@ public class Notificacion {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
+	public Integer getIdNotificacion() {
+		return idNotificacion;
+	}
+
+	public void setIdNotificacion(Integer idNotificacion) {
+		this.idNotificacion = idNotificacion;
+	}
 
 }
