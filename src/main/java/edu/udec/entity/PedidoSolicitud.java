@@ -1,10 +1,15 @@
 package edu.udec.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 @Table(name =  "pedido_solicitud")
@@ -28,6 +33,10 @@ public class PedidoSolicitud {
 	
 	@Column(name = "calificacion", nullable = false)
 	private Integer calificacion;
+	
+	@DateTimeFormat(pattern = "dd/MM/yyyy", iso = ISO.DATE)
+	@Column(name = "fecha")
+	private LocalDateTime fecha;
 
 	public Usuario getUsuario() {
 		return usuario;

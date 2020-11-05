@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -18,21 +19,27 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idProducto;
 	
+	@NotNull(message = "El codigo del producto es requerido")
 	@Column(name = "codigo", nullable = false)
 	private Integer codigo;
 	
+	@NotNull(message = "El nombre del producto es requerido")
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
 	
+	@NotNull(message = "La descripcion del producto es requerido")
 	@Column(name = "descripcion", nullable = false, length = 80)
 	private String descripcion;
 	
+	@NotNull(message = "La foto del producto es requerido")
 	@Column(name = "foto", nullable = false)
 	private String foto;
 	
+	@NotNull(message = "El precio unitario es requerido")
 	@Column(name = "precio_unitario", nullable = false)
 	private Integer precioUnitario;
 	
+	@NotNull(message = "El precio mayorista es requerido")
 	@Column(name = "precio_mayorista", nullable = false)
 	private Integer precioMayorista;
 	

@@ -9,6 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -18,24 +24,34 @@ public class Empresa {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idEmpresa;
 	
+	@NotNull(message = "El tipo de la empresa es requerido")
 	@Column(name = "tipo", nullable = false, length = 45)
 	private String tipo;
 	
+	@NotNull(message = "El campo nombre es requerido")
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
 	
+	@NotNull(message = "El campo correo es requerido")
+	@Email(message = "el correo debe ser valido")
 	@Column(name = "correo", nullable = false)
 	private String correo;
 	
+	@NotNull(message = "El campo direccion es requerido")
 	@Column(name = "direccion", nullable = false)
 	private String direccion;
 	
+	@Pattern(regexp = "[0-9]+", message="El telefono solo puede tener números")
 	@Column(name = "telefono", nullable = false)
 	private String telefono;
 	
+	@Pattern(regexp = "[0-9]+", message="El celular solo puede tener números")
+	@NotEmpty(message = "El campo celular no puede estar vacio")
+	@NotNull(message = "El campo celular es requerido")
 	@Column(name = "celular", nullable = false)
 	private String celular;
 	
+	@NotNull(message = "El campo RUT es requerido")
 	@Column(name = "rut", nullable = false)
 	private String rut;
 	
@@ -129,6 +145,7 @@ public class Empresa {
 		this.estado = estado;
 	}
 
+	@JsonIgnore
 	public Usuario getUsuario() {
 		return usuario;
 	}

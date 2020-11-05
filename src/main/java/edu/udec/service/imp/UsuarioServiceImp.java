@@ -44,6 +44,7 @@ public class UsuarioServiceImp implements IUsuarioService {
 		//FALTA METER LA ENCRIPTACION DE LA CONTRASEÑA
 		t.setEstado(1);
 		t.getRol().setIdRol(4);
+		t.getRol().getNombreRol();
 		return repo.save(t);
 	}
 

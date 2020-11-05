@@ -1,27 +1,18 @@
-package edu.udec.entity;
+package edu.udec.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.udec.entity.Usuario;
 
-@Entity
-@Table
-public class Finca {
+public class FincaDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idFinca;
 	
 	@NotNull(message = "El nombre de la finca es requerido")
@@ -121,7 +112,6 @@ public class Finca {
 		this.estado = estado;
 	}
 
-	@JsonIgnore
 	public Usuario getUsuario() {
 		return usuario;
 	}

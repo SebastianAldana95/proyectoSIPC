@@ -1,32 +1,31 @@
-package edu.udec.entity;
+package edu.udec.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.udec.entity.Usuario;
 
-@Entity
-@Table
-public class Finca {
+public class EmpresaDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Integer idFinca;
+	private Integer idEmpresa;
 	
-	@NotNull(message = "El nombre de la finca es requerido")
+	@NotNull(message = "El tipo de la empresa es requerido")
+	@Column(name = "tipo", nullable = false, length = 45)
+	private String tipo;
+	
+	@NotNull(message = "El campo nombre es requerido")
 	@Column(name = "nombre", nullable = false, length = 45)
 	private String nombre;
+	
+	@Email(message = "el correo debe ser valido")
+	@Column(name = "correo", nullable = false)
+	private String correo;
 	
 	@NotNull(message = "El campo direccion es requerido")
 	@Column(name = "direccion", nullable = false)
@@ -42,10 +41,9 @@ public class Finca {
 	@Column(name = "celular", nullable = false)
 	private String celular;
 	
-	@NotNull(message = "El campo correo es requerido")
-	@Email(message = "el correo debe ser valido")
-	@Column(name = "correo", nullable = false)
-	private String correo;
+	@NotNull(message = "El campo RUT es requerido")
+	@Column(name = "rut", nullable = false)
+	private String rut;
 	
 	@Column(name = "foto", nullable = false)
 	private String foto;
@@ -57,12 +55,20 @@ public class Finca {
 	@JoinColumn(name = "idUsuario", foreignKey = @ForeignKey(name = "FK_usuario"))
 	private Usuario usuario;
 
-	public Integer getIdFinca() {
-		return idFinca;
+	public Integer getIdEmpresa() {
+		return idEmpresa;
 	}
 
-	public void setIdFinca(Integer idFinca) {
-		this.idFinca = idFinca;
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getNombre() {
@@ -71,6 +77,14 @@ public class Finca {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 
 	public String getDireccion() {
@@ -97,12 +111,12 @@ public class Finca {
 		this.celular = celular;
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getRut() {
+		return rut;
 	}
 
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setRut(String rut) {
+		this.rut = rut;
 	}
 
 	public String getFoto() {
@@ -120,8 +134,7 @@ public class Finca {
 	public void setEstado(Integer estado) {
 		this.estado = estado;
 	}
-
-	@JsonIgnore
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
