@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -16,12 +17,16 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @IdClass(PedidoSolicitudPK.class)
 public class PedidoSolicitud {
 	
+	
+	@NotNull(message = "El objeto usuario es requerido")
 	@Id
 	private Usuario usuario;
 	
+	@NotNull(message = "El objeto producto es requerido")
 	@Id
 	private Producto producto;
 	
+	@NotNull(message = "La cantidad del producto es requerida")
 	@Column(name = "cantidad", nullable = false)
 	private Integer cantidad;
 	
@@ -37,6 +42,21 @@ public class PedidoSolicitud {
 	@DateTimeFormat(pattern = "dd/MM/yyyy", iso = ISO.DATE)
 	@Column(name = "fecha")
 	private LocalDateTime fecha;
+
+	public PedidoSolicitud() {
+	}
+
+	public PedidoSolicitud(Usuario usuario, Producto producto, Integer cantidad, Integer valorTotal,
+			String confirmacion, Integer calificacion) {
+		super();
+		this.usuario = usuario;
+		this.producto = producto;
+		this.cantidad = cantidad;
+		this.valorTotal = valorTotal;
+		this.confirmacion = confirmacion;
+		this.calificacion = calificacion;
+		this.fecha = LocalDateTime.now();
+	}
 
 	public Usuario getUsuario() {
 		return usuario;

@@ -64,6 +64,23 @@ public class Empresa {
 	@ManyToOne
 	@JoinColumn(name = "idUsuario", foreignKey = @ForeignKey(name = "FK_usuario"))
 	private Usuario usuario;
+	
+	public Empresa() {
+	}
+
+	public Empresa(Integer idEmpresa, @NotNull(message = "El campo nombre es requerido") String nombre,
+			@NotNull(message = "El campo correo es requerido") @Email(message = "el correo debe ser valido") String correo,
+			@NotNull(message = "El campo direccion es requerido") String direccion,
+			@Pattern(regexp = "[0-9]+", message = "El telefono solo puede tener números") String telefono,
+			@Pattern(regexp = "[0-9]+", message = "El celular solo puede tener números") @NotEmpty(message = "El campo celular no puede estar vacio") @NotNull(message = "El campo celular es requerido") String celular) {
+		super();
+		this.idEmpresa = idEmpresa;
+		this.nombre = nombre;
+		this.correo = correo;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.celular = celular;
+	}
 
 	public Integer getIdEmpresa() {
 		return idEmpresa;

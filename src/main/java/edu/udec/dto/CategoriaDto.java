@@ -1,28 +1,17 @@
-package edu.udec.entity;
+package edu.udec.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.udec.entity.Producto;
 
-@Entity
-@Table
-public class Categoria {
+public class CategoriaDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idCategoria;
 	
 	@NotNull(message = "El nombre de la categoria es requerido")
-	@Column(name = "nombre", nullable = false)
 	private String nombre;
 	
 	@ManyToOne
@@ -45,7 +34,6 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 
-	@JsonIgnore
 	public Producto getProducto() {
 		return producto;
 	}
@@ -53,5 +41,7 @@ public class Categoria {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+	
+	
 
 }
