@@ -39,6 +39,12 @@ public class FincaController {
 		return new ResponseEntity<Finca>(finca, HttpStatus.OK);
 	}
 	
+	@GetMapping("/listarIdUsuario/{idUsuario}")
+	public ResponseEntity<List<Finca>> listarFincasPorIdUsuario(@PathVariable Integer idUsuario){
+		List<Finca> listaFincas = fincaService.listaFincaPorIdUsuario(idUsuario);
+		return new ResponseEntity<List<Finca>>(listaFincas, HttpStatus.OK);
+	}
+	
 	@PostMapping("/guardar")
 	public ResponseEntity<Finca> guardarFinca(@Valid @RequestBody FincaDto obj){
 		Finca finca = fincaService.guardarDto(obj);

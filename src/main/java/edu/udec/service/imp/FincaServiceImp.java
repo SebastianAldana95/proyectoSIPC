@@ -108,4 +108,14 @@ public class FincaServiceImp implements IFincaService {
 		return fincaRepo.save(finca);
 	}
 
+	@Override
+	public List<Finca> listaFincaPorIdUsuario(Integer idUsuario) {
+		if (usuarioRepo.existsById(idUsuario)) {
+			List<Finca> listaFincas = fincaRepo.findByUsuarioIdUsuario(idUsuario);
+			return listaFincas;
+		} else {
+			throw new NotFoundException("Finca no existe!");
+		}
+	}
+
 }

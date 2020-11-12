@@ -40,6 +40,12 @@ public class EmpresaController {
 				
 	}
 	
+	@GetMapping("/listarIdUsuario/{idUsuario}")
+	public ResponseEntity<List<Empresa>> listarEmpresasPorIdUsuario(@PathVariable Integer idUsuario){
+		List<Empresa> listaEmpresas = empresaService.listaEmpresaPorIdUsuario(idUsuario);
+		return new ResponseEntity<List<Empresa>>(listaEmpresas, HttpStatus.OK);
+	}
+	
 	@PostMapping("/guardar")
 	public ResponseEntity<Empresa> guardarEmpresa(@Valid @RequestBody EmpresaDto obj){
 		Empresa empresa = empresaService.guardarDto(obj);

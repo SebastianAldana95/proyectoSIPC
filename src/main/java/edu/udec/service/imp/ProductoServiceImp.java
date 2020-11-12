@@ -2,14 +2,18 @@ package edu.udec.service.imp;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.udec.entity.Categoria;
 import edu.udec.entity.Empresa;
 import edu.udec.entity.Finca;
 import edu.udec.entity.Producto;
 import edu.udec.exception.ArgumentRequiredException;
 import edu.udec.exception.NotFoundException;
+import edu.udec.repository.ICategoriaRepo;
 import edu.udec.repository.IEmpresaRepo;
 import edu.udec.repository.IFincaRepo;
 import edu.udec.repository.IProductoRepo;
@@ -26,6 +30,9 @@ public class ProductoServiceImp implements IProductoService {
 	
 	@Autowired
 	private IFincaRepo fincaRepo;
+	
+	@Autowired
+	private ICategoriaRepo categoriaRepo;
 
 	@Override
 	public List<Producto> listar() {
@@ -41,11 +48,16 @@ public class ProductoServiceImp implements IProductoService {
 		return producto;
 	}
 
+	@Transactional
 	@Override
 	public Producto guardar(Producto t) {
 		
 		if ((t.getEmpresa() == null) && (t.getFinca() == null)) {
 			throw new ArgumentRequiredException("Se requiere una empresa o una finca para realizar esta accion!");
+		}
+		
+		if (t.getCategoria() == null) {
+			throw new ArgumentRequiredException("Se requiere una categoria para crear el producto!");
 		}
 	
 		if(t.getFinca() == null) {
@@ -61,6 +73,18 @@ public class ProductoServiceImp implements IProductoService {
 			producto.setPrecioUnitario(t.getPrecioUnitario());
 			producto.setPrecioMayorista(t.getPrecioMayorista());
 			producto.setEmpresa(empresa);
+			
+			if (t.getCategoria().getIdCategoria() == null ) {
+				Categoria categoria = new Categoria();
+				categoria.setNombre(t.getCategoria().getNombre());
+				
+				categoriaRepo.save(categoria);
+				producto.setCategoria(categoria);
+			} else {
+				Categoria categoria = categoriaRepo.findById(t.getCategoria().getIdCategoria()).orElseThrow(
+						() -> new NotFoundException("Categoria no existe"));
+				producto.setCategoria(categoria);
+			}
 			
 			if (empresa.getUsuario().getRol().getIdRol() == 2 || empresa.getUsuario().getRol().getIdRol() == 3) {
 				return productoRepo.save(producto);
@@ -80,6 +104,18 @@ public class ProductoServiceImp implements IProductoService {
 			producto.setPrecioUnitario(t.getPrecioUnitario());
 			producto.setPrecioMayorista(t.getPrecioMayorista());
 			producto.setFinca(finca);
+			
+			if (t.getCategoria().getIdCategoria() == null ) {
+				Categoria categoria = new Categoria();
+				categoria.setNombre(t.getCategoria().getNombre());
+				
+				categoriaRepo.save(categoria);
+				producto.setCategoria(categoria);
+			} else {
+				Categoria categoria = categoriaRepo.findById(t.getCategoria().getIdCategoria()).orElseThrow(
+						() -> new NotFoundException("Categoria no existe"));
+				producto.setCategoria(categoria);
+			}
 			
 			if (finca.getUsuario().getRol().getIdRol() == 5) {
 				return productoRepo.save(producto);
@@ -108,12 +144,16 @@ public class ProductoServiceImp implements IProductoService {
 			throw new ArgumentRequiredException("Campo id producto requerido");
 		}
 		
-		Producto producto = productoRepo.findById(t.getIdProducto()).orElseThrow(
-				() -> new NotFoundException("Producto no encontrado"));
-		
 		if ((t.getEmpresa() == null) && (t.getFinca() == null)) {
 			throw new ArgumentRequiredException("Se requiere una empresa o una finca para realizar esta accion!");
 		}
+		
+		if (t.getCategoria() == null) {
+			throw new ArgumentRequiredException("Se requiere una categoria para editar el producto!");
+		}
+		
+		Producto producto = productoRepo.findById(t.getIdProducto()).orElseThrow(
+				() -> new NotFoundException("Producto no encontrado"));
 		
 		if (t.getFinca() == null ) {
 			Empresa empresa = empresaRepo.findById(t.getEmpresa().getIdEmpresa()).orElseThrow(
@@ -136,6 +176,19 @@ public class ProductoServiceImp implements IProductoService {
 			}
 			if (t.getPrecioUnitario() != null) {
 				producto.setPrecioUnitario(t.getPrecioUnitario());
+			}
+			
+			if (t.getCategoria() != null) {
+				if (t.getCategoria().getIdCategoria() == null ) {
+					Categoria categoria = new Categoria();
+					categoria.setNombre(t.getCategoria().getNombre());	
+					categoriaRepo.save(categoria);
+					producto.setCategoria(categoria);
+				} else {
+					Categoria categoria = categoriaRepo.findById(t.getCategoria().getIdCategoria()).orElseThrow(
+							() -> new NotFoundException("Categoria no existe"));
+					producto.setCategoria(categoria);
+				}
 			}
 			
 			if (empresa.getUsuario().getRol().getIdRol() == 2 || empresa.getUsuario().getRol().getIdRol() == 3) {
@@ -167,14 +220,53 @@ public class ProductoServiceImp implements IProductoService {
 				producto.setPrecioUnitario(t.getPrecioUnitario());
 			}
 			
+			if (t.getCategoria() != null) {
+				if (t.getCategoria().getIdCategoria() == null ) {
+					Categoria categoria = new Categoria();
+					categoria.setNombre(t.getCategoria().getNombre());	
+					categoriaRepo.save(categoria);
+					producto.setCategoria(categoria);
+				} else {
+					Categoria categoria = categoriaRepo.findById(t.getCategoria().getIdCategoria()).orElseThrow(
+							() -> new NotFoundException("Categoria no existe"));
+					producto.setCategoria(categoria);
+				}
+			}
+			
 			if (finca.getUsuario().getRol().getIdRol() == 5) {
 				return productoRepo.save(producto);
 			}
 			
 		}
 		
-		throw new ArgumentRequiredException("Se requiere una empresa o una finca para realizar esta accion!2");
+		throw new ArgumentRequiredException("Se requiere una empresa o una finca para realizar esta accion!");
 		
+	}
+
+	@Override
+	public List<Producto> listarProductoPorNombreCategoria(String nombre) {
+		List<Producto> productos = productoRepo.findByCategoriaNombre(nombre);
+		return productos;
+	}
+
+	@Override
+	public List<Producto> listaProductoPorIdEmpresa(Integer idEmpresa) {
+		if (empresaRepo.existsById(idEmpresa)) {
+			List<Producto> productos = productoRepo.findByEmpresaIdEmpresa(idEmpresa);
+			return productos;
+		} else {
+			throw new NotFoundException("Empresa no existe!");
+		}
+	}
+
+	@Override
+	public List<Producto> listaProductoPorIdFinca(Integer idFinca) {
+		if (fincaRepo.existsById(idFinca)) {
+			List<Producto> productos = productoRepo.findByFincaIdFinca(idFinca);
+			return productos;
+		} else {
+			throw new NotFoundException("Finca no existe!");
+		}
 	}
 	
 

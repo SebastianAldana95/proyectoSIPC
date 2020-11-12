@@ -5,12 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.udec.dto.CategoriaDto;
 import edu.udec.entity.Categoria;
-import edu.udec.entity.Producto;
+import edu.udec.exception.ArgumentRequiredException;
 import edu.udec.exception.NotFoundException;
 import edu.udec.repository.ICategoriaRepo;
-import edu.udec.repository.IProductoRepo;
 import edu.udec.service.ICategoriaService;
 
 @Service
@@ -18,9 +16,6 @@ public class CategoriaServiceImp implements ICategoriaService{
 	
 	@Autowired
 	private ICategoriaRepo categoriaRepo;
-	
-	@Autowired
-	private IProductoRepo productoRepo;
 
 	@Override
 	public List<Categoria> listar() {
@@ -39,24 +34,16 @@ public class CategoriaServiceImp implements ICategoriaService{
 
 	@Override
 	public Categoria guardar(Categoria t) {
-		/*
-		if (t.getProducto() != null ) {
-			Producto producto = productoRepo.findById(t.getProducto().getIdProducto()).orElseThrow(
-					() -> new NotFoundException("Producto no existe"));
-			
-			Categoria categoria = new Categoria();
-			categoria.setNombre(t.getNombre());
-			categoria.setProducto(producto);
-			categoria.getProducto().setEmpresa(null);
-			categoria.getProducto().setFinca(null);
-			return categoriaRepo.save(categoria);
-		}
 		
-		t.getProducto().setEmpresa(null);
-		t.getProducto().setFinca(null);
+		/*if (t.getProducto().getIdProducto() == null) {
+			throw new ArgumentRequiredException("IdProducto es requerido");
+		} else {
+			if(!productoRepo.existsById(categoriaDto.getProducto().getIdProducto())) {
+				throw new NotFoundException("Producto no encontrado");
+			}
+		}*/
+		
 		return categoriaRepo.save(t);
-		*/
-		return null;
 	}
 
 	@Override
@@ -71,24 +58,27 @@ public class CategoriaServiceImp implements ICategoriaService{
 	}
 
 	@Override
-	public Categoria guardarCategoriaDto(CategoriaDto categoriaDto) {
+	public Categoria editarCategoria(Categoria categoria) {
 		
-		if (categoriaDto.getProducto() != null ) {
-			Producto producto = productoRepo.findById(categoriaDto.getProducto().getIdProducto()).orElseThrow(
-					() -> new NotFoundException("Producto no existe"));
-			
-			Categoria categoria = new Categoria();
-			categoria.setNombre(categoriaDto.getNombre());
-			categoria.setProducto(producto);
-			categoria.getProducto().setEmpresa(null);
-			categoria.getProducto().setFinca(null);
-			return categoriaRepo.save(categoria);
+		if (categoria.getIdCategoria() == null ) {
+			throw new ArgumentRequiredException("Campo id categoria es requerido");
 		}
 		
-		Categoria categoria = new Categoria();
-		categoria.setNombre(categoriaDto.getNombre());
-		return categoriaRepo.save(categoria);
+		Categoria newCategoria = categoriaRepo.findById(categoria.getIdCategoria()).orElseThrow(
+				() -> new NotFoundException("Categoria no encontrada"));
 		
+		if (categoria.getNombre() != null ) {
+			newCategoria.setNombre(categoria.getNombre());
+		}
+		
+		return categoriaRepo.save(newCategoria);
+	}
+
+	@Override
+	public List<Categoria> listarPorNombreCategoria(String nombre) {
+		
+		List<Categoria> categorias = categoriaRepo.findByNombre(nombre);
+		return categorias;
 	}
 
 }

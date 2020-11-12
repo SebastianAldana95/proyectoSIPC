@@ -120,4 +120,14 @@ public class EmpresaServiceImp implements IEmpresaService{
 		return empresaRepo.save(empresa);
 	}
 
+	@Override
+	public List<Empresa> listaEmpresaPorIdUsuario(Integer idUsuario) {
+		if (usuarioRepo.existsById(idUsuario)) {
+			List<Empresa> listaEmpresas = empresaRepo.findByUsuarioIdUsuario(idUsuario);
+			return listaEmpresas;
+		} else {
+			throw new NotFoundException("Empresa no existe!");
+		}
+	}
+
 }

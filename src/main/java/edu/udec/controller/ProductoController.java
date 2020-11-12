@@ -38,6 +38,24 @@ public class ProductoController {
 		return new ResponseEntity<Producto>(producto, HttpStatus.OK);
 	}
 	
+	@GetMapping("/listarNombreCategoria/{nombre}")
+	public ResponseEntity<List<Producto>> listarPorNombreCategoria(@PathVariable String nombre) {
+		List<Producto> productos = productosService.listarProductoPorNombreCategoria(nombre);
+		return new ResponseEntity<List<Producto>>(productos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/listarIdEmpresa/{idEmpresa}")
+	public ResponseEntity<List<Producto>> listarPorIdEmpresa(@PathVariable Integer idEmpresa) {
+		List<Producto> productos = productosService.listaProductoPorIdEmpresa(idEmpresa);
+		return new ResponseEntity<List<Producto>>(productos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/listarIdFinca/{idFinca}")
+	public ResponseEntity<List<Producto>> listarPorIdFinca(@PathVariable Integer idFinca) {
+		List<Producto> productos = productosService.listaProductoPorIdFinca(idFinca);
+		return new ResponseEntity<List<Producto>>(productos, HttpStatus.OK);
+	}
+	
 	@PostMapping("/guardar")
 	public ResponseEntity<Producto> guardarProducto(@Valid @RequestBody Producto obj){
 		Producto producto = productosService.guardar(obj);

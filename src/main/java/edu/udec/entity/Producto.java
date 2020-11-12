@@ -50,6 +50,11 @@ public class Producto {
 	@ManyToOne
 	@JoinColumn(name = "idFinca", foreignKey = @ForeignKey(name = "FK_finca"))
 	private Finca finca;
+	
+	@NotNull(message = "El objeto categoria es requerido")
+	@ManyToOne
+	@JoinColumn(name = "idCategoria", foreignKey = @ForeignKey(name = "FK_categoria"))
+	private Categoria categoria;
 
 	public Integer getIdProducto() {
 		return idProducto;
@@ -121,6 +126,14 @@ public class Producto {
 
 	public void setFinca(Finca finca) {
 		this.finca = finca;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override

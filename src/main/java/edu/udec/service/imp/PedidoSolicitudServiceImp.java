@@ -48,7 +48,6 @@ public class PedidoSolicitudServiceImp implements IPedidoSolicitudService{
 	@Override
 	public PedidoSolicitud guardar(PedidoSolicitud t) {
 		
-		int i = 2;
 		/*
 		if ((t.getUsuario() != null) && (t.getProducto() != null)) {
 			Usuario usuario = usuarioRepo.findById(t.getUsuario().getIdUsuario()).orElseThrow(
