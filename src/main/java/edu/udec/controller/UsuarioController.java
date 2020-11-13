@@ -39,6 +39,12 @@ public class UsuarioController {
 				
 	}
 	
+	@GetMapping("/listarPorRol/{idRol}")
+	public ResponseEntity<List<Usuario>> listarUsuariosPorRol(@PathVariable Integer idRol){
+		List<Usuario> listaUsuarios = usuarioService.listarPorRol(idRol);
+		return new ResponseEntity<List<Usuario>>(listaUsuarios, HttpStatus.OK);
+	}
+	
 	@PostMapping("/guardar")
 	public ResponseEntity<Usuario> guardarUsuario(@Valid @RequestBody Usuario obj){
 		Usuario usuario = usuarioService.guardar(obj);

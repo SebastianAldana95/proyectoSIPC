@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.udec.dto.PedidoSolicitudDto;
 import edu.udec.entity.PedidoSolicitud;
 import edu.udec.service.IPedidoSolicitudService;
 
@@ -38,14 +39,14 @@ public class PedidoSolicitudController {
 	}
 	
 	@PostMapping("/guardar")
-	public ResponseEntity<PedidoSolicitud> guardarPedidoSolicitud(@Valid @RequestBody PedidoSolicitud obj){
-		PedidoSolicitud pedidoSolicitud = pedidoSolicitudService.guardar(obj);
-		return new ResponseEntity<PedidoSolicitud>(pedidoSolicitud, HttpStatus.CREATED);
+	public ResponseEntity<PedidoSolicitudDto> guardarPedidoSolicitud(@Valid @RequestBody PedidoSolicitud obj){
+		PedidoSolicitudDto pedidoSolicitud = pedidoSolicitudService.guardarDto(obj);
+		return new ResponseEntity<PedidoSolicitudDto>(pedidoSolicitud, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/eliminar/{id}")
-	public ResponseEntity<Object> borrarPedidoSolicitud(@PathVariable Integer id){
-		pedidoSolicitudService.eliminar(id);
+	@DeleteMapping("/eliminar/{idProducto}/{idUsuario}")
+	public ResponseEntity<Object> borrarPedidoSolicitud(@PathVariable Integer idProducto, @PathVariable Integer idUsuario){
+		pedidoSolicitudService.eliminarPedidoSolicitud(idProducto, idUsuario);
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 	}
 

@@ -85,12 +85,41 @@ public class UsuarioServiceImp implements IUsuarioService {
 			user.setEstado(usuario.getEstado());
 		}
 		if (usuario.getRol().getIdRol() != null) {
-			Rol rol = new Rol();
-			rol.setIdRol(usuario.getRol().getIdRol());
-			user.setRol(rol);
+			if (usuario.getRol().getIdRol() == 2 || usuario.getRol().getIdRol() == 3 || usuario.getRol().getIdRol() == 4 || usuario.getRol().getIdRol() == 5) {
+				Rol rol = new Rol();
+				rol.setIdRol(usuario.getRol().getIdRol());
+				user.setRol(rol);			
+			} else {
+				throw new NotFoundException("Rol no existe!");
+			}		
 		}
 		
 		return repo.save(user);
+	}
+
+	@Override
+	public List<Usuario> listarPorRol(Integer idRol) {
+		
+		if (idRol == 2 || idRol == 3 || idRol == 4 || idRol == 5) {
+			
+			switch (idRol) {
+			case 2:
+				List<Usuario> listaComerciantes = repo.findByRolIdRol(idRol);
+				return listaComerciantes;
+			case 3:
+				List<Usuario> listaMayorista = repo.findByRolIdRol(idRol);
+				return listaMayorista;
+			case 4:
+				List<Usuario> listaPersonaNatural = repo.findByRolIdRol(idRol);
+				return listaPersonaNatural;
+			case 5:
+				List<Usuario> listaAgricultor = repo.findByRolIdRol(idRol);
+				return listaAgricultor;
+			default:
+				break; 
+			}	
+		}
+		throw new NotFoundException("Rol no existe!");
 	}
 
 }

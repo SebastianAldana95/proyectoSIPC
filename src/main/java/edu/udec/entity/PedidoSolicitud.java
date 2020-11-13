@@ -106,4 +106,12 @@ public class PedidoSolicitud {
 		this.calificacion = calificacion;
 	}
 
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
+
 }
